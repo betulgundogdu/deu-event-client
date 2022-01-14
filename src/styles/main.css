@@ -1,0 +1,110 @@
+
+html,
+body,
+body > div { /* the react root */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto Condensed', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+ul {
+  margin: 0;
+  padding: 0 0 0 1.5em;
+}
+
+li {
+  margin: 1.5em 0;
+  padding: 0;
+}
+
+b { /* used for event dates/times */
+  margin-right: 3px;
+}
+
+a {
+  color: #215b98;
+}
+
+.btn {
+  font-family: 'Roboto Condensed', sans-serif !important;
+  border-radius: 0;
+}
+
+.home {
+  display: flex;
+  height: 100%;
+  font-size: 14px;
+}
+
+.home-sidebar {
+  min-height: 100%;
+  width: 300px;
+  line-height: 1.5;
+  background: #fff;
+  border-right: 1px solid #d3e2e8;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  color: #333;
+  position: sticky;
+}
+
+.home-sidebar-section {
+  padding: 2em;
+}
+
+.home-main {
+  flex-grow: .8;
+  padding: 2em;
+}
+
+.fc { /* the calendar root */
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.logo {
+  height:15vh;
+}
+
+.social-media {
+  height: 5%;
+  font-size: 2em;
+}
+
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  width: 50%;
+  padding: 50px;
+}
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].popup-overlay {
+  background: #000;
+}
+
+.popup-title {
+  text-align:center;
+  color: #215b98;
+  font-family: 'Roboto Condensed', sans-serif !important;
+
+}
