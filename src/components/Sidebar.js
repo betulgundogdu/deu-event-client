@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { AiFillGithub } from 'react-icons/ai';
 import { formatDate } from '@fullcalendar/react'
 import React from 'react';
