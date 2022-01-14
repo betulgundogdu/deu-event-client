@@ -50,6 +50,7 @@ const App = () => {
       }
     }
     fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
  
   const handleDateSelect = async (selectInfo) => {
