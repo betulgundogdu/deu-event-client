@@ -25,19 +25,19 @@ const ManageUsers = () => {
   }, []);
 
 
-  const onChange = (email, validation) => async (e) => {
+  const onChange = (email, is_organizer) => async (e) => {
 
     const checked = e.target.checked;
 
     try {
       await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/validation`, {
         email,
-        validation: checked
+        is_organizer: checked
       });
 
       const newUsers = users.map(user => {
         if (user.email === email) {
-          return {...user, validation: !user.validation}
+          return {...user, is_organizer: !user.is_organizer}
         }
         return user;
       })
@@ -55,7 +55,7 @@ const ManageUsers = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Is Verified</th>
+              <th>Is organizer?</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +63,7 @@ const ManageUsers = () => {
               <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td><input type="checkbox" checked={user.validation} onChange={onChange(user.email, user.validation)} /></td>
+                <td><input type="checkbox" checked={user.is_organizer} onChange={onChange(user.email, user.is_organizer)} /></td>
               </tr>
             ))}
             

@@ -24,11 +24,12 @@ const Signup = () => {
     }
 
     try {
-      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users`, {
+      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/signup`, {
         name,
         email,
         password,
-        validation: false
+        verified: false,
+        is_organizer: false
       });
 
       dispatch(setUser(result.data));
