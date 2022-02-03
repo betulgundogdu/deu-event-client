@@ -14,7 +14,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}users`);
+        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/user`);
         dispatch(setUsers(result.data));
       } catch {
   
@@ -30,7 +30,7 @@ const ManageUsers = () => {
     const checked = e.target.checked;
 
     try {
-      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}users/validation`, {
+      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/validation`, {
         email,
         validation: checked
       });

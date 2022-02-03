@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     try {
-      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}users/login`, {
+      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/login`, {
         email,
         password
       });

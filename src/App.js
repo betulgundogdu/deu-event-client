@@ -43,7 +43,7 @@ const App = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}events`);
+        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events`);
         dispatch(setEvents(result.data));
       } catch {
   
@@ -70,7 +70,7 @@ const App = () => {
     calendarApi.unselect() // clear date selection
     
     if (title) {
-      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}events`, {
+      const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events`, {
         date: addModal.info.startStr,
         title,
         organization: user._id,
@@ -98,7 +98,7 @@ const App = () => {
   }
 
   const handleEventRemove = async () => {
-    await axios.delete(`${process.env.REACT_APP_DEU_EVENT_SERVER}events/${removeModal.info.id}`);
+    await axios.delete(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events/${removeModal.info.id}`);
     dispatch(setEvents(events.filter(event => event._id !== removeModal.info.id)));
     removeModal.info.remove();
     setRemoveModal({
