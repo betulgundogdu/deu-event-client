@@ -14,7 +14,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
-  const handleSignupClick = async () => {
+  const handleSignupClick = (close) => async () => {
     if (!name || !email || !password) {
       NotificationManager.error('All fields are required!');
     }
@@ -32,8 +32,13 @@ const Signup = () => {
         is_organizer: false
       });
 
-      dispatch(setUser(result.data));
-
+      if(result.data?.error || result.data?.success) {
+        const func = result.data?.error ? 'error' : 'success';
+        NotificationManager[func](result.data.message);
+      } else { 
+        dispatch(setUser(result.data));
+      }
+      close();
     } catch (e) {
       console.log(e);
     }
@@ -62,12 +67,9 @@ const Signup = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
           </Form.Group>
-          <Button variant="primary" onClick={handleSignupClick} type="submit">
+          <Button variant="primary" onClick={handleSignupClick(close)} type="submit">
             sign up
           </Button>
-          <a href="#" className="close" onClick={close}>
-            &times;
-          </a>
         </div>
       )}
     </Popup>

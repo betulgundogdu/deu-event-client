@@ -13,7 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = (close) => async () => {
     if (!email || !password) {
       NotificationManager.error('All fields are required!');
     }
@@ -28,8 +28,12 @@ const Login = () => {
         password
       });
 
-      dispatch(setUser(result.data));
-
+      if(result.data?.error || result.data?.success) {
+        NotificationManager.error(result.data.message);
+      } else {
+        dispatch(setUser(result.data));
+      }
+      close();
     } catch (e) {
       console.log(e);
     }
@@ -52,15 +56,9 @@ const Login = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" onClick={handleLoginClick} type="submit">
+            <Button variant="primary" onClick={handleLoginClick(close)} type="submit">
               login
             </Button>
-          <a href="#" className="close">
-            &times;
-          </a>
         </div>
       )}
     </Popup>
