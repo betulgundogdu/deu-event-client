@@ -14,7 +14,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/user`);
+        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users`);
         dispatch(setUsers(result.data));
       } catch {
   
