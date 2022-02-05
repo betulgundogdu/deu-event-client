@@ -1,56 +1,51 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { AiFillGithub } from 'react-icons/ai';
-import { formatDate } from '@fullcalendar/react'
-import React from 'react';
+import {React, useState} from 'react';
 import { useSelector } from 'react-redux';
-import Login from './Login';
-import Signup from './Signup';
 import ManageUsers from './ManageUsers';
+import SeeMyEvents from './SeeMyEvents';
+import ProfileSettings from './ProfileSettings';
+import { Button, Offcanvas } from 'react-bootstrap';
+import {HiMenu} from 'react-icons/hi';
 
-const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
 
-function renderSidebarEvent(event) {
-  return (
-    <li key={event._id}>
-      <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
-      <i>{event.title}</i>
-    </li>
-  )
-}
-
-const Sidebar = ({
-  currentEvents,
-}) => {
+const Sidebar = () => {
   const user = useSelector(state =>  state.app?.user);
 
-  return (
-    <div className='home-sidebar'>
-      <div className='home-sidebar-section'>
-        <img alt="logo" src={logo_url} className="logo"></img>
-      </div>
-      <div className='home-sidebar-section'>
-        <h2>All Events ({currentEvents.length})</h2>
-        <ul>
-          {currentEvents.map(renderSidebarEvent)}
-        </ul>
-      </div>
-      <div className='home-sidebar-section'>
-        {
-          user?.email && <div>Welcome <strong>{user.name}</strong>!</div>
-        }
-        {!user?.email && (
-          <>
-            <Login />
-            <Signup />
-          </>
-        )}
+  const [show, setShow] = useState(true);
 
-        {user.name === 'admin' && <ManageUsers />}
-      </div>
-      <div className='home-sidebar-section'>
-        <a className="social-media" href="#"><AiFillGithub /></a>
-      </div>
-    </div>
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+
+  return (
+    <>
+      <Button onClick={handleShow} className="me-2 open-left-menu">
+        <HiMenu />
+      </Button>
+      <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title></Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <div className="sidebar-menu">
+            <div className="header">
+              <h4>Welcome <strong>{user.name}</strong>!</h4> 
+              <br/>
+              <img src={"https://ui-avatars.com/api/?name=" + user.name} alt=""/>
+            </div>
+            <div className="control">
+              <p> Activities</p>
+              {user.is_admin === true && <ManageUsers />}
+              <SeeMyEvents />
+              <ProfileSettings />
+            </div>
+            <div className="footer">
+              <a href="" className='logout'>logout</a>
+            </div>
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
   )
 }
 

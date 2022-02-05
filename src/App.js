@@ -3,16 +3,24 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/main.css'
-import 'react-notifications/lib/notifications.css';
+import { formatDate } from '@fullcalendar/react'
 import Sidebar from './components/Sidebar';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { IoMdAdd, IoMdSearch } from 'react-icons/io';
+import { BsCalendarDate } from 'react-icons/bs';
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setEvents } from './slices/appSlice'
 import { useSelector } from 'react-redux'
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Carousel, Form, Container, Col, Tab, Row, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/main.css'
+import 'react-notifications/lib/notifications.css';
+
+const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
+
 
 function renderEventContent(eventInfo) {
   return (
@@ -54,7 +62,7 @@ const App = () => {
   }, [])
  
   const handleDateSelect = async (selectInfo) => {
-    if (!user?.email || !user?.validation) {
+    if (!user?.email || !user?.is_organizer) {
       return false;
     }
 
@@ -71,9 +79,10 @@ const App = () => {
     
     if (title) {
       const result = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events`, {
-        date: addModal.info.startStr,
+        start_date: addModal.info.startStr,
+        end_date: addModal.info.endStr,
         title,
-        organization: user._id,
+        organizer: user._id,
         location,
         category,
         detail
@@ -89,7 +98,7 @@ const App = () => {
   }
 
   const handleEventClick = async (clickInfo) => {
-    if (clickInfo.event.extendedProps.organization === user._id || user.name === 'admin') {
+    if (clickInfo.event.extendedProps.organizer === user._id || user.is_admin === true) {
       setRemoveModal({
         show: true,
         info: clickInfo.event
@@ -107,12 +116,115 @@ const App = () => {
     })
   }
 
+  function renderListGroupItem(event) {
+    return (
+      <ListGroup.Item action href={'#' + event._id}>
+        {event.title}
+      </ListGroup.Item>
+    )
+  }
+
+  function renderTabPane(event) {
+    return (
+      <Tab.Pane eventKey={'#' + event._id}>
+        <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
+        <p>{event.detail}</p>
+    </Tab.Pane>
+    )
+  }
+
   return (
-    <div className='home'>
-      <Sidebar 
-        currentEvents={events}
-      />
-      <div className='home-main'>
+    <Container>
+      <Row className="top-menu">
+        {user?.verified && <Sidebar />}
+        <div className='buttons'>
+
+        {
+          !user?.email && (  
+          <>
+            <Login />
+            <Signup />
+            </>
+          )
+        }
+        </div>
+      </Row>
+
+      <Carousel variant="dark" className="carousel">
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=First slide&bg=f5f5f5"
+            alt="First slide"
+          />
+          <Carousel.Caption>
+            <h5>First slide label</h5>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=Second slide&bg=eee"
+            alt="Second slide"
+          />
+          <Carousel.Caption>
+            <h5>Second slide label</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100"
+            src="holder.js/800x400?text=Third slide&bg=e5e5e5"
+            alt="Third slide"
+          />
+          <Carousel.Caption>
+            <h5>Third slide label</h5>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
+
+      <Col className="list-events">
+        <h4>Latest Events ({events.length})</h4>
+        <div className="filters">
+          <InputGroup className="filter search">
+            <InputGroup.Text id="inputGroup-sizing-default"><IoMdSearch className="md-icon"/></InputGroup.Text>
+            <FormControl
+              aria-label="Default"
+              aria-describedby="inputGroup-sizing-default"
+            />
+            </InputGroup>
+          <InputGroup className="filter">
+            <InputGroup.Text id="inputGroup-sizing-default"><BsCalendarDate className="md-icon"/> Start </InputGroup.Text>
+            <Form.Control type="date" name='starting_date' />
+          </InputGroup>
+          <InputGroup className="filter">
+            <InputGroup.Text id="inputGroup-sizing-default"><BsCalendarDate className="md-icon"/> End</InputGroup.Text>
+            <Form.Control type="date" name='ending_date' />
+          </InputGroup>
+          <Button variant="outline-primary" onClick={() => setAddModal({show: true, info: {}})}><IoMdAdd className="md-icon"/></Button>
+        </div>
+        <hr/>
+        <Tab.Container id="list-group-tabs-example">
+          <Row>
+            <Col sm={4}>
+              <ListGroup>
+                {events.map(renderListGroupItem)}
+              </ListGroup>
+            </Col>
+            <Col sm={8}>
+              <Tab.Content>
+                {events.map(renderTabPane)}
+              </Tab.Content>
+              
+            </Col>
+          </Row>
+        </Tab.Container>
+      </Col>
+
+      <Col className='calendar-wrapper'>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -126,13 +238,17 @@ const App = () => {
           selectMirror={true}
           dayMaxEvents={true}
           weekends={true}
-          events={events.map(event => ({ start:event.date, title: event.title, id: event._id, extendedProps: {organization: event.organization} }))} // alternatively, use the `events` setting to fetch from a feed
+          showNonCurrentDates={false}
+          events={events.map(event => ({ start_date:event.start_date, end_date:event.end_date, title: event.title, id: event._id, extendedProps: {organizer: event.organizer} }))} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
           eventContent={renderEventContent}
           eventClick={handleEventClick}
+          windowResize={true}
         />
-      </div>
+      </Col>
+
       <NotificationContainer />
+
       {addModal.show && <Modal show={addModal.show} onHide={() => setAddModal({show: false, info: {}})}>
         <Modal.Header closeButton>
           <Modal.Title>Add new event</Modal.Title>
@@ -164,6 +280,7 @@ const App = () => {
           </Button>
         </Modal.Footer>
       </Modal>}
+      
       {removeModal.show && <Modal show={removeModal.show} onHide={() => {setRemoveModal({show: false, info: {}})}}>
         <Modal.Header closeButton>
           <Modal.Title>{removeModal.info.title}</Modal.Title>
@@ -179,7 +296,7 @@ const App = () => {
         </Modal.Footer>
       </Modal>}
       
-    </div>
+    </Container>
   )
 }
 

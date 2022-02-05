@@ -31,6 +31,7 @@ const Login = () => {
       if(result.data?.error || result.data?.success) {
         NotificationManager.error(result.data.message);
       } else {
+        NotificationManager.success('Succesfully logged in!')
         dispatch(setUser(result.data));
       }
       close();
@@ -40,7 +41,7 @@ const Login = () => {
   }
 
   return (
-    <Popup trigger={<Button variant="secondary">Login</Button>} modal>
+    <Popup trigger={<Button className="button">Login</Button>} modal>
       {close => (
         <div>
           <h1 className="popup-title">Login</h1>
@@ -56,7 +57,7 @@ const Login = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" onClick={handleLoginClick(close)} type="submit">
+            <Button  className="button" variant="primary" onClick={handleLoginClick(close)} type="submit">
               login
             </Button>
         </div>

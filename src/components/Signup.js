@@ -46,7 +46,7 @@ const Signup = () => {
   }
 
   return (
-    <Popup trigger={<Button variant="primary">Sign up</Button>} modal>
+    <Popup trigger={<Button className="button">Sign up</Button>} modal>
       {close => (
         <div>
           <h1 className="popup-title">Sign Up</h1>
@@ -67,7 +67,7 @@ const Signup = () => {
             <Form.Label>Password</Form.Label>
             <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
           </Form.Group>
-          <Button variant="primary" onClick={handleSignupClick(close)} type="submit">
+          <Button  className="button" variant="primary" onClick={handleSignupClick(close)} type="submit">
             sign up
           </Button>
         </div>
