@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Popup from 'reactjs-popup';
-import { Button, Form, Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import axios from 'axios';
 import { setUsers } from '../slices/appSlice';
 import { useSelector } from 'react-redux';
@@ -79,27 +79,8 @@ const ManageUsers = () => {
                 <td>{user.email}</td>
                 <td><input type="checkbox" checked={user.is_organizer} onChange={onChange(user.email, user.is_organizer)} /></td>
                 <td>
-                  
-                <Popup trigger={<Button variant="danger" onClick={removeUser(user._id)}>Delete</Button>} modal>
-                    {close => (
-                      <div>
-                        <h1 className="popup-title">Login</h1>
-                          <Form.Group className="mb-3">
-                            <Form.Text className="text-muted">
-                              Are you sure?
-                            </Form.Text>  
-                            <br />               
-                            <Button  className="button" variant="danger" onClick={removeUser(user._id)} type="submit">
-                              Yes
-                            </Button>
-                            <Button  className="button" variant="secondary" onClick={close} type="submit">
-                              No
-                            </Button>
-                          </Form.Group>
-                      </div>
-                    )}
-                  </Popup>
-                  </td>
+                  <Button variant="danger" onClick={removeUser(user._id)} type="button">Delete</Button>
+                </td>
               </tr>
             ))}
             
