@@ -14,7 +14,8 @@ const SeeMyEvents = () => {
           <thead>
             <tr>
               <th>Event</th>
-              <th>Date</th>
+              <th>Start Date</th>
+              <th>End Date</th>
               <th>Location</th>
               <th>Detail</th>
               <th>Organizer</th>
@@ -23,10 +24,11 @@ const SeeMyEvents = () => {
           <tbody>
             {myEvents.map(event => (
               <tr key={event._id}>
-                <td>{event.name}</td>
-                <td>{event.date}</td>
+                <td>{event.title}</td>
+                <td>{event.start_date}</td>
+                <td>{event.end_date}</td>
                 <td>{event.location}</td>
-                <td>{event.detail}</td>
+                <td className="txt-elipsis">{event.detail}</td>
                 <td>{event.organizer}</td>
               </tr>
             ))}

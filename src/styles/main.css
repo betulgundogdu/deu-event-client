@@ -35,9 +35,10 @@ a {
   color: #215b98;
 }
 
-.btn {
+.btn-secondary {
   font-family: 'Poppins', sans-serif !important;
   border-radius: 0;
+  width: 180px !important;
 }
 
 
@@ -92,13 +93,15 @@ a {
 }
 
 .top-menu {
-  background-color: #2C3E50;
+  background-color: #151e27;
+  opacity: .9;
   left: 0;
   position: absolute;
-  width:100%;
+  width:105%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index:999;
 }
 
 .top-menu > .buttons {
@@ -125,6 +128,7 @@ a {
 .offcanvas-start {
   color: #fff;
   background-color: #2C3E50;
+  /*rgba(255, 220, 40, 0.15)*/
 }
 
 .btn-close {
@@ -237,15 +241,20 @@ a {
 .carousel {
   position: absolute;
   background-color: #215b98;
-  top:5%;
+  color: #fff;
+  top:0%;
   left:0;
   right:0;
   width: 100%;
-  height: 35%;
+  height: 40%;
   display:flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.carousel-dark .carousel-control-next-icon, .carousel-control-prev-icon, .carousel-dark {
+  filter: none !important;
 }
 
 .list-group-item.active {
@@ -262,11 +271,13 @@ a {
 .input-group {
   display: flex;
   flex-direction: row;
-  margin: 5px 10px;
+  margin: 5px 5px;
+  padding: 5px;
+  flex-wrap: nowrap !important;
 }
 
 .input-group-text{
-  width: 30%;
+  width: 20%;
   font-size: 14px;
   display:flex;
   align-items: center;
@@ -277,8 +288,16 @@ a {
   width: auto !important;
 }
 
+.btn-outline-primary {
+  margin: 10px !important;
+}
+
 .filter {
-  width: 35%;
+  width: auto;
+}
+
+.form-control {
+  width:40% !important;
 }
 
 .form-select, .form-control {
@@ -303,6 +322,37 @@ a {
 
 .fix-btn-width {
   width: 140px;
+}
+
+.resize-img {
+  object-fit: cover !important;
+  height: 385px;
+}
+
+table {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.txt-elipsis {
+  display: block;/* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em;
+  line-height: 1.8em;
+}
+
+.txt-elipsis-lg {
+  display: block;/* or inline-block */
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  max-height: 14em;
+  line-height: 1.8em;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
 }
 
 /* Mobile */

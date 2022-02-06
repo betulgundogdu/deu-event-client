@@ -41,7 +41,7 @@ const Login = () => {
   }
 
   return (
-    <Popup trigger={<Button className="button">Login</Button>} modal>
+    <Popup trigger={<Button className="header-buttons">Login</Button>} modal>
       {close => (
         <div>
           <h1 className="popup-title">Login</h1>

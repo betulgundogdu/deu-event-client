@@ -6,20 +6,19 @@ import interactionPlugin from '@fullcalendar/interaction'
 import { formatDate } from '@fullcalendar/react'
 import Sidebar from './components/Sidebar';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { IoMdAdd, IoMdSearch } from 'react-icons/io';
-import { BsCalendarDate } from 'react-icons/bs';
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { setEvents } from './slices/appSlice'
 import { useSelector } from 'react-redux'
-import { Modal, Button, Carousel, Form, Container, Col, Tab, Row, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import { Modal, Button, Carousel, Form, Container, Col, Tab, Row, ListGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css'
 import 'react-notifications/lib/notifications.css';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
-// const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
+const imgPath  = './20211221_pia.jpeg';
+//  const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
 
 
 function renderEventContent(eventInfo) {
@@ -124,11 +123,36 @@ const App = () => {
     )
   }
 
+  /*
+  function getMyEvents(events) {
+    const userEvents = events.find({
+      "attendees": user._id
+    })
+
+    return userEvents.map(event => (
+      <span>{event.title}</span>
+    ));
+  }
+
+  function getEventAttendess(event, users) {
+    const attendeesOnEvent = users.find({
+      "_id": event.attendees
+    })
+
+    attendeesOnEvent.map(user => (
+      <span>{user.photo}</span>
+    ));
+  }
+  */
+
   function renderTabPane(event) {
     return (
       <Tab.Pane eventKey={'#' + event._id}>
-        <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
+        <b>{formatDate(event.start_date, {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) + ' - ' + formatDate(event.end_date, {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</b>
+        <br/>
+        <i>{event.location}</i>
         <p>{event.detail}</p>
+        <br />
     </Tab.Pane>
     )
   }
@@ -136,81 +160,50 @@ const App = () => {
   return (
     <Container>
       <Row className="top-menu">
-        {user?.verified && <Sidebar />}
-        <div className='buttons'>
-
-        {
-          !user?.email && (  
-          <>
+        {!user?.verified && (  
+          <div className='buttons'>
             <Login />
             <Signup />
-            </>
+          </div>
           )
         }
-        </div>
+        {user.verified && <Sidebar /> }
       </Row>
 
       <Carousel variant="dark" className="carousel">
         <Carousel.Item>
           <img
-            className="d-block w-100"
-            src="holder.js/800x400?text=First slide&bg=f5f5f5"
+            className="d-block w-100 resize-img"
+            src={imgPath}
             alt="First slide"
           />
-          <Carousel.Caption>
-            <h5>First slide label</h5>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
-            className="d-block w-100"
-            src="holder.js/800x400?text=Second slide&bg=eee"
+            className="d-block w-100 resize-img"
+            src={imgPath}
             alt="Second slide"
           />
-          <Carousel.Caption>
-            <h5>Second slide label</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </Carousel.Caption>
         </Carousel.Item>
         <Carousel.Item>
           <img
-            className="d-block w-100"
-            src="holder.js/800x400?text=Third slide&bg=e5e5e5"
+            className="d-block w-100 resize-img"
+            src={imgPath}
             alt="Third slide"
           />
-          <Carousel.Caption>
-            <h5>Third slide label</h5>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-          </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
 
       <Col className="list-events">
         <h4>Latest Events ({events.length})</h4>
-        <div className="filters">
-          <InputGroup className="filter search">
-            <InputGroup.Text id="inputGroup-sizing-default"><IoMdSearch className="md-icon"/></InputGroup.Text>
-            <FormControl
-              aria-label="Default"
-              aria-describedby="inputGroup-sizing-default"
-            />
-            </InputGroup>
-          <InputGroup className="filter">
-            <InputGroup.Text id="inputGroup-sizing-default"><BsCalendarDate className="md-icon"/> Start </InputGroup.Text>
-            <Form.Control type="date" name='starting_date' />
-          </InputGroup>
-          <InputGroup className="filter">
-            <InputGroup.Text id="inputGroup-sizing-default"><BsCalendarDate className="md-icon"/> End</InputGroup.Text>
-            <Form.Control type="date" name='ending_date' />
-          </InputGroup>
-          <Button variant="outline-primary" onClick={() => setAddModal({show: true, info: {}})}><IoMdAdd className="md-icon"/></Button>
-        </div>
         <hr/>
         <Tab.Container id="list-group-tabs-example">
           <Row>
             <Col sm={4}>
               <ListGroup>
+              <ListGroup.Item action href='#list-header' disabled>
+                Events
+              </ListGroup.Item> 
                 {events.map(renderListGroupItem)}
               </ListGroup>
             </Col>
@@ -239,11 +232,12 @@ const App = () => {
           dayMaxEvents={true}
           weekends={true}
           showNonCurrentDates={false}
-          events={events.map(event => ({ start_date:event.start_date, end_date:event.end_date, title: event.title, id: event._id, extendedProps: {organizer: event.organizer} }))} // alternatively, use the `events` setting to fetch from a feed
+          events={events.map(event => ({ start:event.start_date, end:event.end_date, title: event.title, id: event._id, extendedProps: {organizer: event.organizer} }))} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
           eventContent={renderEventContent}
           eventClick={handleEventClick}
           windowResize={true}
+          maintainDuration={true}
         />
       </Col>
 

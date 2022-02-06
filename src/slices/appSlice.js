@@ -13,7 +13,7 @@ export const appSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
-      if (action.payload.name === 'admin') {
+      if (action.payload.is_admin === true) {
         state.admin = true;
       }
     },

@@ -47,6 +47,26 @@ const ManageUsers = () => {
     }
   }
 
+  const removeUser = (id) => async (e) => {
+
+    try {
+      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/delete`, {
+        id
+      });
+
+      const newUsers = users.map(user => {
+        if (user._id === id) {
+          return {...user}
+        }
+        return user;
+      })
+      dispatch(setUsers(newUsers));
+    } catch {
+
+    }
+  }
+
+
   return (
     <Popup trigger={<Button variant="secondary">Manage Users</Button>} modal>
       {close => (
@@ -56,6 +76,7 @@ const ManageUsers = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Is organizer?</th>
+              <th>Remove User</th>
             </tr>
           </thead>
           <tbody>
@@ -64,6 +85,7 @@ const ManageUsers = () => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td><input type="checkbox" checked={user.is_organizer} onChange={onChange(user.email, user.is_organizer)} /></td>
+                <td><Button variant="danger" onChange={removeUser(user._id)}>Delete</Button></td>
               </tr>
             ))}
             

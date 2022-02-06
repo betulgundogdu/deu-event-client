@@ -2,11 +2,10 @@
 import {React, useState} from 'react';
 import { useSelector } from 'react-redux';
 import ManageUsers from './ManageUsers';
+import ManageEvents from './ManageEvents';
 import SeeMyEvents from './SeeMyEvents';
-import ProfileSettings from './ProfileSettings';
 import { Button, Offcanvas } from 'react-bootstrap';
 import {HiMenu} from 'react-icons/hi';
-
 
 const Sidebar = () => {
   const user = useSelector(state =>  state.app?.user);
@@ -22,26 +21,28 @@ const Sidebar = () => {
       <Button onClick={handleShow} className="me-2 open-left-menu">
         <HiMenu />
       </Button>
-      <Offcanvas show={show} onHide={handleClose}>
+      <Offcanvas show={show} onHide={handleClose} backdrop={false}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title></Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div className="sidebar-menu">
             <div className="header">
-              <h4>Welcome <strong>{user.name}</strong>!</h4> 
+              <h4>Welcome {user?.name && <strong> {user.name} </strong>} {!user?.name && <strong> Guest</strong> }!</h4> 
               <br/>
-              <img src={"https://ui-avatars.com/api/?name=" + user.name} alt=""/>
+                <img src={"https://ui-avatars.com/api/?name=" + user.name} alt=""/>
             </div>
+          
             <div className="control">
               <p> Activities</p>
-              {user.is_admin === true && <ManageUsers />}
+              {user.is_admin === true && <><ManageUsers /> <ManageEvents /> </>}
               <SeeMyEvents />
-              <ProfileSettings />
             </div>
+            
             <div className="footer">
-              <a href="" className='logout'>logout</a>
+              <a href="" className='logout'>logout</a> 
             </div>
+            
           </div>
         </Offcanvas.Body>
       </Offcanvas>
