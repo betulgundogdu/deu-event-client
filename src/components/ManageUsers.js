@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Popup from 'reactjs-popup';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Form, Table } from 'react-bootstrap';
 import axios from 'axios';
 import { setUsers } from '../slices/appSlice';
 import { useSelector } from 'react-redux';
@@ -50,13 +50,15 @@ const ManageUsers = () => {
   const removeUser = (id) => async (e) => {
 
     try {
-      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/delete`, {
+      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/delete/${id}`, {
         id
       });
 
       const newUsers = users.map(user => {
         if (user._id === id) {
-          return {...user}
+          const index = users.indexOf(user)
+          users.splice(index, 1);
+          return users;
         }
         return user;
       })
@@ -85,7 +87,28 @@ const ManageUsers = () => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td><input type="checkbox" checked={user.is_organizer} onChange={onChange(user.email, user.is_organizer)} /></td>
-                <td><Button variant="danger" onChange={removeUser(user._id)}>Delete</Button></td>
+                <td>
+                  
+                <Popup trigger={<Button variant="danger" onClick={removeUser(user._id)}>Delete</Button>} modal>
+                    {close => (
+                      <div>
+                        <h1 className="popup-title">Login</h1>
+                          <Form.Group className="mb-3">
+                            <Form.Text className="text-muted">
+                              Are you sure?
+                            </Form.Text>  
+                            <br />               
+                            <Button  className="button" variant="danger" onClick={removeUser(user._id)} type="submit">
+                              Yes
+                            </Button>
+                            <Button  className="button" variant="secondary" onClick={close} type="submit">
+                              No
+                            </Button>
+                          </Form.Group>
+                      </div>
+                    )}
+                  </Popup>
+                  </td>
               </tr>
             ))}
             
