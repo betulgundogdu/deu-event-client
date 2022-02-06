@@ -19,7 +19,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css'
 import 'react-notifications/lib/notifications.css';
 
-const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
+// const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
 
 
 function renderEventContent(eventInfo) {
