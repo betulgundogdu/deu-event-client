@@ -195,7 +195,7 @@ const App = () => {
       </Carousel>
 
       <Col className="list-events">
-        <h4>Latest Events ({events.length})</h4>
+        <h4>Upcoming Events ({events.length})</h4>
         <hr/>
         <Tab.Container id="list-group-tabs-example">
           <Row>

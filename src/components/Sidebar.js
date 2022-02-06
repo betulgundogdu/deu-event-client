@@ -36,7 +36,6 @@ const Sidebar = () => {
             <div className="control">
               <p> Activities</p>
               {user.is_admin === true && <><ManageUsers /> <ManageEvents /> </>}
-              <SeeMyEvents />
             </div>
             
             <div className="footer">
