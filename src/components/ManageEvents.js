@@ -24,6 +24,28 @@ const ManageUsers = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onChange = (id, is_featured) => async (e) => {
+
+    const checked = e.target.checked;
+
+    try {
+      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events/featured`, {
+        id,
+        is_featured: checked
+      });
+
+      const newEvents = events.map(event => {
+        if (event._id === id) {
+          return {...event, is_organizer: !event.is_featured}
+        }
+        return event;
+      })
+      dispatch(setUsers(newEvents));
+    } catch {
+
+    }
+  } 
+
   return (
     <Popup trigger={<Button variant="secondary">Manage Events</Button>} modal>
       {close => (
@@ -38,7 +60,7 @@ const ManageUsers = () => {
             {events.map(event => (
               <tr key={event._id}>
                 <td>{event.title}</td>
-                <td><input type="checkbox" checked={event.is_featured} /></td>
+                <td><input type="checkbox" checked={event.is_featured} onChange={onChange(event._id, event.is_featured)} /></td>
               </tr>
             ))}
             
