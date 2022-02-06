@@ -3,7 +3,6 @@ import {React, useState} from 'react';
 import { useSelector } from 'react-redux';
 import ManageUsers from './ManageUsers';
 import ManageEvents from './ManageEvents';
-import SeeMyEvents from './SeeMyEvents';
 import { Button, Offcanvas } from 'react-bootstrap';
 import {HiMenu} from 'react-icons/hi';
 
