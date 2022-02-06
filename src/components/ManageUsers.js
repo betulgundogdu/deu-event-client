@@ -50,19 +50,10 @@ const ManageUsers = () => {
   const removeUser = (id) => async (e) => {
 
     try {
-      await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/delete/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users/${id}`, {
         id
       });
-
-      const newUsers = users.map(user => {
-        if (user._id === id) {
-          const index = users.indexOf(user)
-          users.splice(index, 1);
-          return users;
-        }
-        return user;
-      })
-      dispatch(setUsers(newUsers));
+      dispatch(setUsers(users.filter(user => user._id !== id)));
     } catch {
 
     }

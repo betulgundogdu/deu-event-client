@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux';
 import Popup from 'reactjs-popup';
 import { Button, Table } from 'react-bootstrap';
 import axios from 'axios';
-import { setUsers } from '../slices/appSlice';
+import { setEvents } from '../slices/appSlice';
 import { useSelector } from 'react-redux';
 
-const ManageUsers = () => {
+const ManageEvents = () => {
 
   const events = useSelector(state => state.app.events);
 
@@ -14,8 +14,8 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/users`);
-        dispatch(setUsers(result.data));
+        const result = await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events`);
+        dispatch(setEvents(result.data));
       } catch {
   
       }
@@ -36,11 +36,11 @@ const ManageUsers = () => {
 
       const newEvents = events.map(event => {
         if (event._id === id) {
-          return {...event, is_organizer: !event.is_featured}
+          return {...event, is_featured: !event.is_featured}
         }
         return event;
       })
-      dispatch(setUsers(newEvents));
+      dispatch(setEvents(newEvents));
     } catch {
 
     }
@@ -71,4 +71,4 @@ const ManageUsers = () => {
   )
 }
 
-export default ManageUsers;
+export default ManageEvents;
