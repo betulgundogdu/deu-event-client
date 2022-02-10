@@ -17,10 +17,6 @@ import 'react-notifications/lib/notifications.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
 
-const imgPath  = './20211221_pia.jpeg';
-//  const logo_url = "https://edebiyat.deu.edu.tr/wp-content/uploads/DEU-Logo-JPEG-250x250.jpg"
-
-
 function renderEventContent(eventInfo) {
   return (
     <>
@@ -38,6 +34,7 @@ const App = () => {
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [detail, setDetail] = useState('');
+  const [url, setUrl] = useState('');
   const [addModal, setAddModal] = useState({
     show: false,
     info: {}
@@ -69,7 +66,7 @@ const App = () => {
   }
 
   const handleAddEvent = async () => {
-    if (!title || !location || !category || !detail) {
+    if (!title || !location || !category || !detail || !url) {
       NotificationManager.error('All fields are required!');
     }
     let calendarApi = addModal.info.view.calendar
@@ -84,7 +81,8 @@ const App = () => {
         organizer: user._id,
         location,
         category,
-        detail
+        detail,
+        url
       });
     
       dispatch(setEvents([...events, result.data]));
@@ -93,6 +91,7 @@ const App = () => {
       setCategory('');
       setTitle('');
       setDetail('');
+      setUrl('');
     }
   }
 
@@ -187,27 +186,20 @@ const App = () => {
       </Row>
 
       <Carousel variant="dark" className="carousel">
-        <Carousel.Item>
-          <img
-            className="d-block w-100 resize-img"
-            src={imgPath}
-            alt="First slide"
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className="d-block w-100 resize-img"
-            src={imgPath}
-            alt="Second slide"
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className="d-block w-100 resize-img"
-            src={imgPath}
-            alt="Third slide"
-          />
-        </Carousel.Item>
+        {
+          events.filter(event => event?.is_featured).map(event => {
+            return (
+              <Carousel.Item>
+              <img
+                className="d-block w-100 resize-img"
+                src={event?.url}
+                alt="First slide"
+              />
+            </Carousel.Item>
+            )
+          })
+        }
+    
       </Carousel>
 
       <Col className="list-events">
@@ -279,6 +271,10 @@ const App = () => {
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Detail</Form.Label>
               <Form.Control as="textarea" value={detail} onChange={(e) => setDetail(e.target.value)} type="text" placeholder="Enter details" />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Detail</Form.Label>
+              <Form.Control value={url} onChange={(e) => setUrl(e.target.value)} type="text" placeholder="Enter image url" />
             </Form.Group>
         </Modal.Body>
         <Modal.Footer>
