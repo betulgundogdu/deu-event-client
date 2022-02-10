@@ -387,3 +387,7 @@ table {
     width: 90%;
   }
 }
+
+#popup-root {
+  height: auto !important;
+}
