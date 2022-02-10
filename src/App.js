@@ -148,23 +148,27 @@ const App = () => {
   const onClickJoin = (user_id, event_id) => async (e) => {
 
     try {
-      await axios.get(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events/:${event_id}/join/:${user_id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_DEU_EVENT_SERVER}/events/${event_id}/join/${user_id}`, {
         event_id,
         user_id
       });
+      dispatch(setEvents(events.map(event => event._id === event_id ? response.data : event)));
     } catch {
   
     }
   }
 
   function renderTabPane(user_id, event) {
+    const isJoined = event?.attendees.indexOf(user_id) > -1;
     return (
       <Tab.Pane eventKey={'#' + event._id}>
         <b>{formatDate(event.start_date, {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) + ' - ' + formatDate(event.end_date, {year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</b>
         <br/>
         <i>{event.location}</i>
         <p>{event.detail}</p>
-        <Button onClick={onClickJoin(user_id, event.id)}> Join</Button>
+        {
+        }
+        <Button disabled={isJoined} onClick={onClickJoin(user_id, event._id)}> {isJoined ? 'Joined' : 'Join'}</Button>
     </Tab.Pane>
     )
   }
@@ -221,7 +225,7 @@ const App = () => {
             </Col>
             <Col sm={8}>
               <Tab.Content>
-                {events.map((event) => renderTabPane(user.id, event))}
+                {events.map((event) => renderTabPane(user._id, event))}
               </Tab.Content>
               
             </Col>
