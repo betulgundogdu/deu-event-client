@@ -167,7 +167,7 @@ const App = () => {
         <p>{event.detail}</p>
         {
         }
-        <Button disabled={isJoined} onClick={onClickJoin(user_id, event._id)}> {isJoined ? 'Joined' : 'Join'}</Button>
+        {user?._id && <Button disabled={isJoined} onClick={onClickJoin(user_id, event._id)}> {isJoined ? 'Joined' : 'Join'}</Button> }
     </Tab.Pane>
     )
   }
